@@ -1,4 +1,5 @@
 import Control.Monad
+import System.Time
 
 promptLine :: String ->IO String
 promptLine output = putStrLn output >> getLine
@@ -34,22 +35,13 @@ countFalse [] = 0
 countFalse (x:xs)  |x = countFalse xs
                     |otherwise = 1+countFalse xs
 
-{-
-check :: [a]->[a]->Int
-check _ [] = 0
-check [] _ = check _ []
-check w:ws r:rs = if w==r then 1+ rst else rst where rst = check ws rs
--}
---    putStrLn$show (length (words theline))
--- >> getLine >> length$words ln
---take command line input
-
---doPureStuff :: [String] -> IO String
---doPureStuff ln = 
-
---check :: IO String->String
---check user_input = do user_input  
-    
---main = getLine >>= lines$readFile >>= putStrLn$head
---        putStrLn show (sum$map repeatAfterMe file)
-
+timed :: IO a -> IO (a,Int)
+timed action = do tstart <- getClockTime
+x <- action
+tstop <- getClockTime
+return (x, tstop ‘diffSeconds‘ tstart)
+diffSeconds :: ClockTime -> ClockTime -> Int
+t1 ‘diffSeconds‘ t0 | d < noTimeDiff{tdDay = 1} =
+tdHour d * 3600 + tdMin d * 60 + tdSec d
+where
+d = t1 ‘diffClockTimes‘ t0
