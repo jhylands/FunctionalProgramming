@@ -1,25 +1,21 @@
-
 hamming :: [Integer]
-hamming = [x|x<-Integer,ishamming(x)]
+hamming  = h 2 `merge` h 3 `merge` h 5
+    where
+    h n = map (n*) (1:hamming)
 
-ham :: [Integer] -> [Integer]
-ham x = map (*) hamming 
-
+merge :: Ord a => [a] -> [a] -> [a]
+merge (x:xs) (y:ys)  =  case compare x y of
+                        LT -> x : merge xs (y:ys)
+                        EQ -> x : merge xs ys
+                        GT -> y : merge (x:xs) ys
 
 ishamming :: Integer->Bool
-ishamming x = 
+ishamming x = True
+-- A nieve way to do the above function is devide by 2,3,5 as that will 
+-- result true for all the hammin numbers
+-- the problem is that this will also result true for some non-hamming numbers
+
 
 --canDiv :: Integer -> Bool
 --canDiv x y = x % y == 0
-
-primes :: [Integer]
-primes = 2:[x|x<-[3,5..],prime x primes]
-
-prime :: Integer->[Integer]->Bool
-prime x (p:ps) = if (fromIntegral p)>sqrt (fromIntegral x) then True else x `mod` p /=0 && prime x ps
---prime x = not (foldr1 (||) (map (\p->(x/p)==0) [p|\<-primes,p<sqrt(x)]))
-
-
-
-
 
