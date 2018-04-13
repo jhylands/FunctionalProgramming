@@ -30,7 +30,7 @@ symbol  :: String -> Parser String
 symbol s  =  string s ..* indent
 
 decl :: Parser Decl
-decl  =  error "Declare a working 'decl' parser. See Q2(a)."
+decl  =  
 
 declsDoc :: [Decl] -> DOC
 declsDoc  =  error "Declare a working 'declsDoc'. See Q2(b)."

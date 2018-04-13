@@ -1,7 +1,7 @@
 import Data.Char (isDigit)
 import Data.List (sort, transpose, permutations, isInfixOf,intercalate)
 import System.IO (hFlush, stdout)
---import System.Random (randomIO)
+import System.Random (randomIO)
 --import Test.FitSpec hiding (rows)
 
 -- This program is about sliding-block puzzles in a
@@ -116,7 +116,7 @@ getValidMove e  =  do putStr "Move? " ; hFlush stdout
                               getValidMove e
 
 randomEight :: IO Eight
-randomEight  =  putStrLn "Give me an 8" >> E getLine
+randomEight  =  error "no"
 
 minSolve :: Eight -> Int
 minSolve  =  error "Declare a working 'minSolve'.  See Q1(f)."
