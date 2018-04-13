@@ -1,0 +1,5 @@
+data ThreeWay t  =  This t | That t | Other t
+data Maybe t     =  Nothing | Just t
+data List t      =  Nil | Snoc (List t) t
+data FunnyQ t    =  FQ (List t) (List t)
+data CatTree t   =  One t | Cat (CatTree t) (CatTree t)
