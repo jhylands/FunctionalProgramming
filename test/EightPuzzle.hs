@@ -1,7 +1,8 @@
 import Data.Char (isDigit)
-import Data.List (sort, transpose, permutations, isInfixOf)
+import Data.List (sort, transpose, permutations, isInfixOf,intercalate)
 import System.IO (hFlush, stdout)
-import Test.FitSpec hiding (rows)
+--import System.Random (randomIO)
+--import Test.FitSpec hiding (rows)
 
 -- This program is about sliding-block puzzles in a
 -- a 3x3 grid with eight tiles and one free space.
@@ -43,8 +44,22 @@ unrows, uncols :: [String] -> Eight
 unrows  =  E . concat
 uncols  =  unrows . transpose
 
+join :: [a]->[a]->[a]
+join delim [x] = [x]
+join delim (x:xs) = x: delim  ++ join delim xs
+
+breaks :: Int->String->[String]
+breaks n [] = []
+breaks n s  |length s >= n = take n s : breaks n (drop n s)
+           |otherwise = [s]
+            
+
 instance Show Eight where
-  show  =  error "Declare a working Show Eight instance. See Q1(b)."
+  show (E e) = hr ++ "\n" ++ intercalate ("\n"++hr++"\n") pain  ++ ('\n':hr)
+        where 
+        hr = "+---+---+---+"
+        pain = map f (breaks 3 e)
+        f x = "| " ++ join " | " x ++ " |"
 
 validMove :: String -> Eight -> Bool
 validMove [t] e  =  or [adjacent t ' ' r | r <- rows e] ||
@@ -72,11 +87,15 @@ makeMove t e  |  or [adjacent t ' ' r | r <- rows e]
               =  error "makeMove: not a valid move"
 
 swapIfAdjacent :: Eq a => a -> a -> [a] -> [a]
-swapIfAdjacent  =  error "Declare a working 'swapIfAdjacent'. See Q1(c)."
-           
+swapIfAdjacent _ _ [] = []
+swapIfAdjacent _ _ [x] = [x]
+swapIfAdjacent x y (a:b:cde) |[a,b] `elem` [[n,m]|n<-[x,y],m<-[x,y]] = b:a:cde
+                             |otherwise = a:swapIfAdjacent x y (b:cde)
+
+{-           
 properties :: (Word2 -> Word2 -> [Word2] -> [Word2]) -> [Property]
 properties  =  error "Declare 'properties' of swapIfAdjacent.  See Q1(d)."
-
+-}
 interSolveRandom :: IO ()
 interSolveRandom  =  do e <- randomEight
                         interSolve e
@@ -97,7 +116,7 @@ getValidMove e  =  do putStr "Move? " ; hFlush stdout
                               getValidMove e
 
 randomEight :: IO Eight
-randomEight  =  error "Declare a working 'randomEight'. See Q1(e)."
+randomEight  =  putStrLn "Give me an 8" >> E getLine
 
 minSolve :: Eight -> Int
 minSolve  =  error "Declare a working 'minSolve'.  See Q1(f)."
